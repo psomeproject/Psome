@@ -20,11 +20,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("MainActivity","App opened")
+        setContentView(R.layout.activity_main)
+        Log.d("MainActivityLog","App opened")
 
         if (!isPermissionGranted()) {
             askPermissions()
-            Log.d("MainActivity","Permissions asked")
+            Log.d("MainActivityLog","Permissions asked")
         }
 
         auth = Firebase.auth
@@ -45,24 +46,25 @@ class MainActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
-        currentUser?.let {
-            Log.d("testas","i")
-        }
+        Log.d("MainActivityLog","ActivityStarted")
 
         val localPrefs = "MyPrefsFile"
         val settings = getSharedPreferences(localPrefs, 0)
 
         when {
             currentUser != null -> {
+                Log.d("MainActivityLog","Go to HomeActivity")
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
             }
             settings.getBoolean("my_first_time", true) -> {
                 settings.edit().putBoolean("my_first_time", false).apply()
+                Log.d("MainActivityLog","Go to RegisterActivity")
                 val intent = Intent(this, RegisterActivity::class.java)
                 startActivity(intent)
             }
             else -> {
+                Log.d("MainActivityLog","Go to LoginActivity")
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
